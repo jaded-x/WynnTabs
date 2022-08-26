@@ -6,7 +6,9 @@
   "mixins": [
   ],
   "client": [
-    "ExampleMixin"
+    "HandledScreenAccessor",
+    "TabAdder",
+    "TabManagerContainerImplementer"
   ],
   "injectors": {
     "defaultRequire": 1
