@@ -7,7 +7,6 @@ import net.jaded.wynntabs.mixin.HandledScreenAccessor;
 import net.jaded.wynntabs.tabs.render.TabRenderInfo;
 import net.jaded.wynntabs.tabs.render.TabRenderer;
 import net.jaded.wynntabs.tabs.tab.*;
-import net.jaded.wynntabs.util.MouseUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
@@ -100,12 +99,9 @@ public class TabManager {
 
     public void onScreenOpen(HandledScreen<?> screen) {
         setCurrentScreen(screen);
-        MouseUtil.tryPop();
     }
 
     public void onTabClick(Tab tab) {
-        MouseUtil.push();
-
         if (!(tab instanceof InventoryTab)) {
             tabOpenedRecently = true;
         }

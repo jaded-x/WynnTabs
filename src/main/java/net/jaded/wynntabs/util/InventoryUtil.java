@@ -21,15 +21,17 @@ public final class InventoryUtil {
 
     public static void openInventoryMenu(int slot) {
         MinecraftClient client = MinecraftClient.getInstance();
+        Int2ObjectMap<ItemStack> changedSlots = new Int2ObjectOpenHashMap<>();
+        changedSlots.put(slot, new ItemStack(Items.AIR));
 
         client.getNetworkHandler().sendPacket(new ClickSlotC2SPacket(
                 client.player.currentScreenHandler.syncId,
-                1,
+                0,
                 slot,
                 0,
                 SlotActionType.PICKUP,
-                ItemStack.EMPTY,
-                new Int2ObjectOpenHashMap<>()
+                client.player.currentScreenHandler.getStacks().get(slot),
+                changedSlots
         ));
     }
 
