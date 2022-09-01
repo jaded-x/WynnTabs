@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.*;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Hand;
 
 public final class InventoryUtil {

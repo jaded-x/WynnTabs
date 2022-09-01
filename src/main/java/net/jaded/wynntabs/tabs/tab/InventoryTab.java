@@ -16,6 +16,11 @@ public class InventoryTab extends Tab{
     public void open() {
         MinecraftClient client = MinecraftClient.getInstance();
         client.setScreen(new InventoryScreen(client.player));
+
+
+        var ping = client.getCurrentServerEntry().ping;
+        //int ping = client.player.networkHandler.getPlayerListEntry(client.player.getUuid()).getLatency();
+        client.player.sendMessage(new LiteralText(String.valueOf(ping)), false);
     }
 
     @Override
