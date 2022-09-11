@@ -26,6 +26,8 @@ public class SkillPointsTab extends Tab {
         lastSlot = client.player.getInventory().selectedSlot;
         client.player.getInventory().selectedSlot = 6;
         opened = true;
+
+
     }
 
     @Override

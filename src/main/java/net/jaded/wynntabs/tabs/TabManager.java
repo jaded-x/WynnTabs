@@ -7,6 +7,7 @@ import net.jaded.wynntabs.mixin.HandledScreenAccessor;
 import net.jaded.wynntabs.tabs.render.TabRenderInfo;
 import net.jaded.wynntabs.tabs.render.TabRenderer;
 import net.jaded.wynntabs.tabs.tab.*;
+import net.jaded.wynntabs.util.LoggerUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
@@ -17,6 +18,7 @@ import net.minecraft.sound.SoundEvents;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public class TabManager {
@@ -36,7 +38,8 @@ public class TabManager {
                 new InventoryTab(),
                 new SkillPointsTab(),
                 new MasteryTomesTab(),
-                new QuestsTab());
+                new QuestsTab(),
+                new SkillTreeTab());
         this.tabRenderer = new TabRenderer(this);
     }
 
@@ -54,9 +57,12 @@ public class TabManager {
             if (client.currentScreen instanceof InventoryScreen) {
                 currentTab = this.tabs.get(0);
                 screen = Screen.INVENTORY;
-            } else if (client.currentScreen.getTitle().toString().contains("skill points")) {
+            } else if (client.currentScreen.getTitle().toString().contains("Character Info")) {
                 currentTab = this.tabs.get(1);
                 screen = Screen.SKILLPOINTS;
+            } else if (client.currentScreen.getTitle().toString().contains("Mastery Tomes")) {
+                currentTab = this.tabs.get(2);
+                screen = Screen.QUESTS;
             } else if (client.currentScreen.getTitle().toString().contains("Quests")) {
                 currentTab = this.tabs.get(3);
                 screen = Screen.QUESTS;
@@ -118,6 +124,14 @@ public class TabManager {
     public void onOpenTab(Tab tab) {
         if (currentTab != null && currentTab != tab) {
             currentTab.onClose();
+        }
+
+        MinecraftClient client = MinecraftClient.getInstance();
+
+        if (client.player.currentScreenHandler != null) {
+            for (int i = 0; i < Objects.requireNonNull(client.player).currentScreenHandler.slots.size(); i++) {
+                LoggerUtil.getInstance().logger.info(client.player.currentScreenHandler.getStacks().get(i).getOrCreateNbt().toString());
+            }
         }
 
         setCurrentTab(tab);

@@ -26,6 +26,8 @@ public abstract class Tab {
 
     public void onClose() {}
 
+
+
     @Environment(EnvType.CLIENT)
     public void renderTabIcon(MatrixStack matrices, TabRenderInfo tabRenderInfo, HandledScreen<?> currentScreen) {
         ItemRenderer itemRenderer = ((ScreenAccessor) currentScreen).getItemRenderer();
