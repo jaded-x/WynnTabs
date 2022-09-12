@@ -14,11 +14,11 @@ import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.LiteralText;
 
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public class TabManager {
@@ -26,8 +26,8 @@ public class TabManager {
     public Tab currentTab;
 
     private HandledScreen<?> currentScreen;
-    public Screen screen = Screen.NULL;
-    public boolean tabOpenedRecently;
+    public Screen displayedScreen = Screen.NULL;
+
     private HandledScreen<?> prevScreen;
 
     public final TabRenderer tabRenderer;
@@ -49,23 +49,21 @@ public class TabManager {
 
     public void updateCurrentTab() {
         MinecraftClient client = MinecraftClient.getInstance();
+
         if (client.currentScreen == null) {
-            screen = Screen.NULL;
+            displayedScreen = Screen.NULL;
+            return;
         }
 
         if (prevScreen != currentScreen) {
             if (client.currentScreen instanceof InventoryScreen) {
                 currentTab = this.tabs.get(0);
-                screen = Screen.INVENTORY;
             } else if (client.currentScreen.getTitle().toString().contains("Character Info")) {
                 currentTab = this.tabs.get(1);
-                screen = Screen.SKILLPOINTS;
             } else if (client.currentScreen.getTitle().toString().contains("Mastery Tomes")) {
                 currentTab = this.tabs.get(2);
-                screen = Screen.QUESTS;
             } else if (client.currentScreen.getTitle().toString().contains("Quests")) {
                 currentTab = this.tabs.get(3);
-                screen = Screen.QUESTS;
             }
             prevScreen = currentScreen;
         }
@@ -108,9 +106,7 @@ public class TabManager {
     }
 
     public void onTabClick(Tab tab) {
-        if (!(tab instanceof InventoryTab)) {
-            tabOpenedRecently = true;
-        }
+
 
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.player.currentScreenHandler != null) {
@@ -126,14 +122,6 @@ public class TabManager {
             currentTab.onClose();
         }
 
-        MinecraftClient client = MinecraftClient.getInstance();
-
-        if (client.player.currentScreenHandler != null) {
-            for (int i = 0; i < Objects.requireNonNull(client.player).currentScreenHandler.slots.size(); i++) {
-                LoggerUtil.getInstance().logger.info(client.player.currentScreenHandler.getStacks().get(i).getOrCreateNbt().toString());
-            }
-        }
-
         setCurrentTab(tab);
     }
 
@@ -143,16 +131,6 @@ public class TabManager {
 
     public HandledScreen<?> getCurrentScreen() {
         return currentScreen;
-    }
-
-    public boolean screenOpenedViaTab() {
-        if (tabOpenedRecently) {
-            tabOpenedRecently = false;
-
-            return true;
-        }
-
-        return false;
     }
 
     public static TabManager getInstance() {

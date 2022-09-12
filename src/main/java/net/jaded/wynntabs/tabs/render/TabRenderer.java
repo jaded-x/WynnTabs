@@ -8,7 +8,9 @@ import net.jaded.wynntabs.tabs.TabManager;
 import net.jaded.wynntabs.tabs.tab.InventoryTab;
 import net.jaded.wynntabs.tabs.tab.SkillPointsTab;
 import net.jaded.wynntabs.tabs.tab.Tab;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
@@ -80,6 +82,7 @@ public class TabRenderer {
     }
 
     public TabRenderInfo[] getTabRenderInfos() {
+        MinecraftClient client = MinecraftClient.getInstance();
         HandledScreen<?> currentScreen = tabManager.getCurrentScreen();
 
         int x = (currentScreen.width - ((HandledScreenAccessor) currentScreen).getBackgroundWidth()) / 2;
@@ -95,7 +98,7 @@ public class TabRenderer {
             tabInfo.tabReference = tab;
             tabInfo.x = x + i * (TAB_WIDTH + 1);
 
-            if (tabManager.screen == TabManager.Screen.INVENTORY || tabManager.screen == TabManager.Screen.TOMES) {
+            if (client.currentScreen instanceof InventoryScreen || client.currentScreen.getTitle().toString().contains("Mastery Tomes")) {
                 tabInfo.y = y + ((HandledScreenAccessor) currentScreen).getBackgroundHeight() - 4;
             } else {
                 tabInfo.y = y + ((HandledScreenAccessor) currentScreen).getBackgroundHeight() - 5;

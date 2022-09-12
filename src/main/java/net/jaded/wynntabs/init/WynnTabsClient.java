@@ -15,16 +15,20 @@ public class WynnTabsClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ClientTickEvents.START_WORLD_TICK.register(world -> {
-            MinecraftClient client = MinecraftClient.getInstance();
-
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.currentScreen != null) {
                 TabManagerContainer tabManagerContainer = (TabManagerContainer) client;
-                tabManagerContainer.getTabManager().updateCurrentTab();
 
                 tabManagerContainer.getTabManager().tabs.get(1).openDelay();
                 tabManagerContainer.getTabManager().tabs.get(2).openDelay();
                 tabManagerContainer.getTabManager().tabs.get(3).openDelay();
+            }
+        });
+
+        ClientTickEvents.START_CLIENT_TICK.register(client -> {
+            if (client.currentScreen != null) {
+                TabManagerContainer tabManagerContainer = (TabManagerContainer) client;
+                tabManagerContainer.getTabManager().updateCurrentTab();
 
             }
         });
